@@ -42,6 +42,12 @@ export const Navigation = () => {
                 </Link>
               );
             })}
+            <Link to="/login">
+              <Button variant="ghost">Login</Button>
+            </Link>
+            <Link to="/signup">
+              <Button variant="default">Sign Up</Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,6 +83,14 @@ export const Navigation = () => {
                 </Link>
               );
             })}
+            <div className="pt-2 border-t border-border space-y-2">
+              <Link to="/login" onClick={() => setIsOpen(false)} className="block">
+                <Button variant="ghost" className="w-full justify-start">Login</Button>
+              </Link>
+              <Link to="/signup" onClick={() => setIsOpen(false)} className="block">
+                <Button variant="default" className="w-full justify-start">Sign Up</Button>
+              </Link>
+            </div>
           </div>
         )}
       </div>

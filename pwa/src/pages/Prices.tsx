@@ -2,6 +2,7 @@ import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { TrendingUp, TrendingDown, Bell, Download } from "lucide-react";
 
 const priceData = [
@@ -167,7 +168,9 @@ const Prices = () => {
                         )}
                       </div>
 
-                      <Button size="sm">View Details</Button>
+                      <Link to={`/prices/${item.id}`}>
+                        <Button size="sm">View Details</Button>
+                      </Link>
                     </div>
                   </div>
                 </CardContent>

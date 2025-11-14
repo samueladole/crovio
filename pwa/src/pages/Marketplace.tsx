@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 import { Search, Star, MapPin, Phone } from "lucide-react";
 
 const dealers = [
@@ -166,9 +167,11 @@ const Marketplace = () => {
                         Out of Stock
                       </Badge>
                     )}
-                    <Button size="sm" className="w-full" disabled={!product.inStock}>
-                      {product.inStock ? "Contact Dealer" : "Notify When Available"}
-                    </Button>
+                    <Link to={`/marketplace/${product.id}`} className="w-full">
+                      <Button size="sm" className="w-full" disabled={!product.inStock}>
+                        {product.inStock ? "View Details" : "Notify When Available"}
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
