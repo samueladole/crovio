@@ -33,7 +33,7 @@ const Index = () => {
   ];
 
   const benefits = [
-    "50,000+ active farmers trust AgriOne",
+    "50,000+ active farmers trust Crovio",
     "5,000+ verified dealers nationwide",
     "Real-time price updates every hour",
     "Multi-language support",
@@ -80,7 +80,7 @@ const Index = () => {
             Three Powerful Platforms in One
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            AgriOne brings together everything you need to succeed in modern farming
+            Crovio brings together everything you need to succeed in modern farming
           </p>
         </div>
 
@@ -116,7 +116,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
-              Why Farmers Choose AgriOne
+              Why Farmers Choose Crovio
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {benefits.map((benefit, index) => (
@@ -138,7 +138,7 @@ const Index = () => {
               Ready to Transform Your Farming Experience?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of farmers who are already benefiting from AgriOne's comprehensive platform
+              Join thousands of farmers who are already benefiting from Crovio's comprehensive platform
             </p>
             <Link to="/marketplace">
               <Button size="lg" className="gap-2">

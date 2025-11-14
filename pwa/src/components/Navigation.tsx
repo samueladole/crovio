@@ -20,9 +20,9 @@ export const Navigation = () => {
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">A</span>
+              <span className="text-primary-foreground font-bold text-lg">C</span>
             </div>
-            <span className="font-bold text-xl text-foreground">AgriOne</span>
+            <span className="font-bold text-xl text-foreground">Crovio</span>
           </Link>
 
           {/* Desktop Navigation */}

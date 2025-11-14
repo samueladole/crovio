@@ -15,7 +15,7 @@ const Signup = () => {
           <CardHeader>
             <CardTitle className="text-2xl">Create Account</CardTitle>
             <CardDescription>
-              Join AgriOne and connect with trusted dealers
+              Join Crovio and connect with trusted dealers
             </CardDescription>
           </CardHeader>
           <CardContent>

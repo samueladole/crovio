@@ -168,7 +168,7 @@ const Marketplace = () => {
                       </Badge>
                     )}
                     <Link to={`/marketplace/${product.id}`} className="w-full">
-                      <Button size="sm" className="w-full" disabled={!product.inStock}>
+                      <Button size="sm" className="w-full mt-2" disabled={!product.inStock}>
                         {product.inStock ? "View Details" : "Notify When Available"}
                       </Button>
                     </Link>

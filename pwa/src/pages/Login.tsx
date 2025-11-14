@@ -15,7 +15,7 @@ const Login = () => {
           <CardHeader>
             <CardTitle className="text-2xl">Welcome Back</CardTitle>
             <CardDescription>
-              Sign in to your AgriOne account
+              Sign in to your Crovio account
             </CardDescription>
           </CardHeader>
           <CardContent>
