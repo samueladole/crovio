@@ -47,7 +47,7 @@ jobs:
         run: npm run lint --prefix pwa
 
       - name: Run PWA Tests
-        run: npm test --prefix pwa -- --watchAll=false --passWithNoTests
+        run: npm test --prefix pwa -- --passWithNoTests
 
       - name: Build PWA
         run: npm run build --prefix pwa
