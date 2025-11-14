@@ -20,7 +20,9 @@ export const Navigation = () => {
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">C</span>
+              <span className="text-primary-foreground font-bold text-lg">
+                C
+              </span>
             </div>
             <span className="font-bold text-xl text-foreground">Crovio</span>
           </Link>
@@ -43,10 +45,18 @@ export const Navigation = () => {
               );
             })}
             <Link to="/login">
-              <Button variant="ghost">Login</Button>
+              <Button
+                variant={location.pathname == "/login" ? "default" : "ghost"}
+              >
+                Login
+              </Button>
             </Link>
             <Link to="/signup">
-              <Button variant="default">Sign Up</Button>
+              <Button
+                variant={location.pathname == "/signup" ? "default" : "ghost"}
+              >
+                Sign Up
+              </Button>
             </Link>
           </div>
 
@@ -84,11 +94,23 @@ export const Navigation = () => {
               );
             })}
             <div className="pt-2 border-t border-border space-y-2">
-              <Link to="/login" onClick={() => setIsOpen(false)} className="block">
-                <Button variant="ghost" className="w-full justify-start">Login</Button>
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="block"
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  Login
+                </Button>
               </Link>
-              <Link to="/signup" onClick={() => setIsOpen(false)} className="block">
-                <Button variant="default" className="w-full justify-start">Sign Up</Button>
+              <Link
+                to="/signup"
+                onClick={() => setIsOpen(false)}
+                className="block"
+              >
+                <Button variant="default" className="w-full justify-start">
+                  Sign Up
+                </Button>
               </Link>
             </div>
           </div>
