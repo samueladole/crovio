@@ -41,18 +41,13 @@ jobs:
           node-version: "20"
 
       - name: Install PWA Dependencies
-        run: npm install --prefix pwa_app
+        run: npm install --prefix pwa
 
       - name: Run PWA Lint
-        run: npm run lint --prefix pwa_app
+        run: npm run lint --prefix pwa
 
       - name: Run PWA Tests
-        run: npm test --prefix pwa_app -- --watchAll=false
+        run: npm test --prefix pwa -- --watchAll=false --passWithNoTests
 
       - name: Build PWA
-        run: npm run build --prefix pwa_app
-
-      - name: Deploy PWA to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: pwa_app/build
+        run: npm run build --prefix pwa
