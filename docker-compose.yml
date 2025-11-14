@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: crovio-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-crovio_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crovio_password}
+      POSTGRES_DB: ${POSTGRES_DB:-crovio_db}
+    ports:
+    - '5432:5432'
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crovio-backend
+    restart: always
+    env_file:
+    - ./backend/.env
+    depends_on:
+    - postgres
+    ports:
+    - '8000:8000'
+    volumes:
+    - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+
+  pwa:
+    build:
+      context: ./pwa
+      dockerfile: Dockerfile
+    container_name: crovio-pwa
+    restart: always
+    depends_on:
+    - backend
+    ports:
+    - '3000:3000'
+    volumes:
+    - ./pwa:/usr/src/app
+    command: npm start
+
+
+volumes:
+  postgres_data:
