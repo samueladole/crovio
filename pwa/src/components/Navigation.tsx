@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ShoppingBag, TrendingUp, MessageSquare } from "lucide-react";
+import { Menu, X, ShoppingBag, TrendingUp, MessageSquare, Moon, Sun } from "lucide-react";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { theme, setTheme } = useTheme();
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -44,6 +46,15 @@ export const Navigation = () => {
                 </Link>
               );
             })}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label="Toggle theme"
+            >
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            </Button>
             <Link to="/login">
               <Button
                 variant={location.pathname == "/login" ? "default" : "ghost"}
@@ -94,23 +105,19 @@ export const Navigation = () => {
               );
             })}
             <div className="pt-2 border-t border-border space-y-2">
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="block"
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-2"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
-                <Button variant="ghost" className="w-full justify-start">
-                  Login
-                </Button>
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </Button>
+              <Link to="/login" onClick={() => setIsOpen(false)} className="block">
+                <Button variant="ghost" className="w-full justify-start">Login</Button>
               </Link>
-              <Link
-                to="/signup"
-                onClick={() => setIsOpen(false)}
-                className="block"
-              >
-                <Button variant="default" className="w-full justify-start">
-                  Sign Up
-                </Button>
+              <Link to="/signup" onClick={() => setIsOpen(false)} className="block">
+                <Button variant="default" className="w-full justify-start">Sign Up</Button>
               </Link>
             </div>
           </div>

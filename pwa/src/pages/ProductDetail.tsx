@@ -108,9 +108,11 @@ const ProductDetail = () => {
             </Card>
 
             <div className="flex gap-3">
-              <Button size="lg" className="flex-1" disabled={!product.inStock}>
-                Contact Dealer
-              </Button>
+              <Link to={`/contact-dealer/${product.id}`} className="flex-1">
+                <Button size="lg" className="w-full" disabled={!product.inStock}>
+                  Contact Dealer
+                </Button>
+              </Link>
               <Button size="lg" variant="outline">
                 <Phone className="h-4 w-4" />
               </Button>

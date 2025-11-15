@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageSquare, Users, Send, Bot } from "lucide-react";
+import { MessageSquare, Users, Send, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const discussions = [
   {
@@ -63,7 +64,6 @@ const Community = () => {
       <Navigation />
       
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             Crovio Connect
@@ -74,75 +74,64 @@ const Community = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            {/* AI Assistant */}
-            <Card className="shadow-card border-2 border-primary/20">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-hero flex items-center justify-center">
-                    <Bot className="h-6 w-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <CardTitle>AI Farming Assistant</CardTitle>
-                    <CardDescription>Get instant advice powered by AI</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="bg-muted rounded-lg p-3">
-                    <p className="text-sm text-muted-foreground">
-                      Ask me anything about crop management, pest control, weather planning, and more...
-                    </p>
-                  </div>
+            <Link to="/ai-assistant">
+              <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5" />
+                    AI Farming Assistant
+                  </CardTitle>
+                  <CardDescription>Get expert advice on your farming questions</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div className="flex gap-2">
-                    <Input placeholder="Type your question..." />
+                    <Input placeholder="Ask about crops, diseases, weather..." />
                     <Button size="icon">
                       <Send className="h-4 w-4" />
                     </Button>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <p className="text-sm text-muted-foreground">
+                    Try asking: "What's the best fertilizer for wheat?"
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
 
-            {/* Popular Discussions */}
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-4">Popular Discussions</h2>
               <div className="space-y-4">
                 {discussions.map((discussion) => (
-                  <Card key={discussion.id} className="shadow-card hover:shadow-card-hover transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-2 flex-1">
-                          <CardTitle className="text-lg">{discussion.title}</CardTitle>
-                          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                            <span>by {discussion.author}</span>
-                            <span>•</span>
-                            <span>{discussion.region}</span>
+                  <Link key={discussion.id} to={`/community/discussion/${discussion.id}`}>
+                    <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-2 flex-1">
+                            <h3 className="font-semibold text-lg text-foreground">{discussion.title}</h3>
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                              <span>by {discussion.author}</span>
+                              <span>•</span>
+                              <span>{discussion.region}</span>
+                            </div>
                           </div>
+                          <Badge variant="outline">{discussion.category}</Badge>
                         </div>
-                        <Badge variant="outline">{discussion.category}</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <MessageSquare className="h-4 w-4" />
-                          <span className="text-sm">{discussion.replies} replies</span>
+                        <div className="flex items-center justify-between mt-4">
+                          <div className="flex items-center gap-2 text-muted-foreground">
+                            <MessageSquare className="h-4 w-4" />
+                            <span className="text-sm">{discussion.replies} replies</span>
+                          </div>
+                          <Button size="sm" variant="outline">View Discussion</Button>
                         </div>
-                        <Button size="sm" variant="outline">View Discussion</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </section>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Stats */}
             <Card className="shadow-card">
               <CardHeader>
                 <CardTitle>Community Stats</CardTitle>
@@ -163,42 +152,36 @@ const Community = () => {
               </CardContent>
             </Card>
 
-            {/* Active Chats */}
             <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Active Chat Rooms
-                </CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-xl">Active Chat Rooms</CardTitle>
+                <Link to="/community/chats">
+                  <Button variant="ghost" size="sm">View All</Button>
+                </Link>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 {activeChats.map((chat) => (
-                  <div
-                    key={chat.id}
-                    className="p-3 rounded-lg border border-border hover:bg-muted transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-start gap-3">
-                      <Avatar>
+                  <Link key={chat.id} to={`/community/chat/${chat.id}`}>
+                    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+                      <Avatar className="h-10 w-10">
                         <AvatarFallback>{chat.name[0]}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-sm truncate">{chat.name}</div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-semibold text-sm">{chat.name}</span>
+                          <span className="text-xs text-muted-foreground">{chat.time}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
+                          <Users className="h-3 w-3" />
                           {chat.members} members
                         </div>
-                        <div className="text-xs text-muted-foreground mt-1 truncate">
+                        <p className="text-xs text-muted-foreground truncate">
                           {chat.lastMessage}
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground whitespace-nowrap">
-                        {chat.time}
+                        </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
-                <Button variant="outline" size="sm" className="w-full">
-                  View All Chats
-                </Button>
               </CardContent>
             </Card>
           </div>
