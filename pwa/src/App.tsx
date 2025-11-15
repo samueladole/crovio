@@ -20,6 +20,11 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
+import Dealers from "./pages/admin/Dealers";
+import Products from "./pages/admin/Products";
+import PriceManagement from "./pages/admin/PriceManagement";
+import Discussions from "./pages/admin/Discussions";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +49,11 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/dealers" element={<Dealers />} />
+          <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/prices" element={<PriceManagement />} />
+          <Route path="/admin/discussions" element={<Discussions />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
