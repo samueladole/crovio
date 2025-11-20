@@ -25,6 +25,9 @@ import Dealers from "./pages/admin/Dealers";
 import Products from "./pages/admin/Products";
 import PriceManagement from "./pages/admin/PriceManagement";
 import Discussions from "./pages/admin/Discussions";
+import AddDealer from "./pages/admin/AddDealer";
+import AddProduct from "./pages/admin/AddProduct";
+import Analytics from "./pages/admin/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -51,9 +54,12 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/dealers" element={<Dealers />} />
+          <Route path="/admin/dealers/add" element={<AddDealer />} />
           <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/products/add" element={<AddProduct />} />
           <Route path="/admin/prices" element={<PriceManagement />} />
           <Route path="/admin/discussions" element={<Discussions />} />
+          <Route path="/admin/analytics" element={<Analytics />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
