@@ -28,6 +28,7 @@ import Discussions from "./pages/admin/Discussions";
 import AddDealer from "./pages/admin/AddDealer";
 import AddProduct from "./pages/admin/AddProduct";
 import Analytics from "./pages/admin/Analytics";
+import SetPriceAlert from "./pages/SetPriceAlert";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/contact-dealer/:id" element={<ContactDealer />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/prices/:id" element={<PriceDetail />} />
+          <Route path="/set-price-alert" element={<SetPriceAlert />} />
           <Route path="/community" element={<Community />} />
           <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
           <Route path="/community/chats" element={<ChatRooms />} />

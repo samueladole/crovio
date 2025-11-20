@@ -80,10 +80,12 @@ const Prices = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-3 mb-8">
-          <Button variant="default" className="gap-2">
-            <Bell className="h-4 w-4" />
-            Set Price Alert
-          </Button>
+          <Link to="/set-price-alert">
+            <Button variant="default" className="gap-2">
+              <Bell className="h-4 w-4" />
+              Set Price Alert
+            </Button>
+          </Link>
           <Button variant="outline" className="gap-2">
             <Download className="h-4 w-4" />
             Export Report
