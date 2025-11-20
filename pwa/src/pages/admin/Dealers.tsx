@@ -42,10 +42,12 @@ const Dealers = () => {
                 Manage dealer accounts and permissions
               </p>
             </div>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Dealer
-            </Button>
+            <Link to="/admin/dealers/add">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Dealer
+              </Button>
+            </Link>
           </div>
 
           <div className="flex gap-4 mb-6">
