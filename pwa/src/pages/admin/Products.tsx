@@ -42,10 +42,12 @@ const Products = () => {
                 Add, edit, and manage marketplace products
               </p>
             </div>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Product
-            </Button>
+            <Link to="/admin/products/add">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Product
+              </Button>
+            </Link>
           </div>
 
           <div className="flex gap-4 mb-6">
