@@ -10,7 +10,7 @@ const Analytics = () => {
     { label: "Total Users", value: "2,543", change: "+12%", trend: "up", icon: Users },
     { label: "Active Dealers", value: "148", change: "+8%", trend: "up", icon: Package },
     { label: "Products Listed", value: "1,234", change: "+23%", trend: "up", icon: Package },
-    { label: "Revenue", value: "₹12.4L", change: "-3%", trend: "down", icon: DollarSign },
+    { label: "Revenue", value: "₦12.4L", change: "-3%", trend: "down", icon: DollarSign },
   ];
 
   const salesData = [
@@ -31,11 +31,11 @@ const Analytics = () => {
   ];
 
   const topProducts = [
-    { name: "Premium Wheat Seeds", sales: 234, revenue: "₹1.2L" },
-    { name: "Organic Fertilizer", sales: 189, revenue: "₹89K" },
-    { name: "Tractor Parts Set", sales: 156, revenue: "₹18.7L" },
-    { name: "Garden Tools Kit", sales: 143, revenue: "₹45K" },
-    { name: "Irrigation System", sales: 128, revenue: "₹3.2L" },
+    { name: "Premium Wheat Seeds", sales: 234, revenue: "₦1.2L" },
+    { name: "Organic Fertilizer", sales: 189, revenue: "₦89K" },
+    { name: "Tractor Parts Set", sales: 156, revenue: "₦18.7L" },
+    { name: "Garden Tools Kit", sales: 143, revenue: "₦45K" },
+    { name: "Irrigation System", sales: 128, revenue: "₦3.2L" },
   ];
 
   const recentActivity = [
@@ -122,7 +122,7 @@ const Analytics = () => {
                     }}
                   />
                   <Legend />
-                  <Line type="monotone" dataKey="sales" stroke="hsl(var(--primary))" strokeWidth={2} name="Sales (₹)" />
+                  <Line type="monotone" dataKey="sales" stroke="hsl(var(--primary))" strokeWidth={2} name="Sales (₦)" />
                   <Line type="monotone" dataKey="orders" stroke="hsl(var(--chart-2))" strokeWidth={2} name="Orders" />
                 </LineChart>
               </ResponsiveContainer>

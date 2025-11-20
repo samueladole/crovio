@@ -15,9 +15,9 @@ import {
 
 const Products = () => {
   const products = [
-    { id: 1, name: "Premium Wheat Seeds", category: "Seeds", dealer: "Green Valley", price: "₹450/kg", status: "active", stock: 500 },
-    { id: 2, name: "Organic Fertilizer", category: "Fertilizers", dealer: "Farm Fresh", price: "₹280/kg", status: "active", stock: 200 },
-    { id: 3, name: "Tractor Parts Set", category: "Equipment", dealer: "Agro Solutions", price: "₹12,000", status: "pending", stock: 0 },
+    { id: 1, name: "Premium Wheat Seeds", category: "Seeds", dealer: "Green Valley", price: "₦450/kg", status: "active", stock: 500 },
+    { id: 2, name: "Organic Fertilizer", category: "Fertilizers", dealer: "Farm Fresh", price: "₦280/kg", status: "active", stock: 200 },
+    { id: 3, name: "Tractor Parts Set", category: "Equipment", dealer: "Agro Solutions", price: "₦12,000", status: "pending", stock: 0 },
   ];
 
   return (

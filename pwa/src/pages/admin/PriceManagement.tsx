@@ -16,14 +16,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const PriceManagement = () => {
   const prices = [
-    { id: 1, commodity: "Wheat", market: "Delhi", price: "₹2,150/quintal", change: "+5%", trend: "up", lastUpdated: "2 hours ago" },
-    { id: 2, commodity: "Rice", market: "Punjab", price: "₹3,200/quintal", change: "-2%", trend: "down", lastUpdated: "4 hours ago" },
-    { id: 3, commodity: "Cotton", market: "Gujarat", price: "₹6,500/quintal", change: "+8%", trend: "up", lastUpdated: "1 hour ago" },
+    { id: 1, commodity: "Wheat", market: "Delhi", price: "₦2,150/quintal", change: "+5%", trend: "up", lastUpdated: "2 hours ago" },
+    { id: 2, commodity: "Rice", market: "Punjab", price: "₦3,200/quintal", change: "-2%", trend: "down", lastUpdated: "4 hours ago" },
+    { id: 3, commodity: "Cotton", market: "Gujarat", price: "₦6,500/quintal", change: "+8%", trend: "up", lastUpdated: "1 hour ago" },
   ];
 
   const alerts = [
-    { id: 1, commodity: "Wheat", condition: "Price > ₹2,200", users: 145, status: "active" },
-    { id: 2, commodity: "Rice", condition: "Price < ₹3,000", users: 89, status: "active" },
+    { id: 1, commodity: "Wheat", condition: "Price > ₦2,200", users: 145, status: "active" },
+    { id: 2, commodity: "Rice", condition: "Price < ₦3,000", users: 89, status: "active" },
     { id: 3, commodity: "Cotton", condition: "Change > 10%", users: 234, status: "inactive" },
   ];
 

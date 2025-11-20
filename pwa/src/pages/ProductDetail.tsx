@@ -15,7 +15,7 @@ const ProductDetail = () => {
     dealer: "Green Valley Supplies",
     dealerRating: 4.8,
     dealerLocation: "Maharashtra",
-    price: "₹1,200",
+    price: "₦1,200",
     unit: "per 50kg bag",
     inStock: true,
     description: "Premium quality NPK fertilizer with balanced nutrients for optimal crop growth. Suitable for all types of crops during the vegetative and flowering stages.",

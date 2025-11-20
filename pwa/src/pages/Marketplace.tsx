@@ -38,7 +38,7 @@ const products = [
     id: 1,
     name: "NPK Fertilizer 20-20-20",
     dealer: "Green Valley Supplies",
-    price: "₹1,200",
+    price: "₦1,200",
     unit: "per 50kg bag",
     inStock: true,
   },
@@ -46,7 +46,7 @@ const products = [
     id: 2,
     name: "Organic Compost Premium",
     dealer: "Farm Input Co.",
-    price: "₹850",
+    price: "₦850",
     unit: "per 50kg bag",
     inStock: true,
   },
@@ -54,7 +54,7 @@ const products = [
     id: 3,
     name: "Drip Irrigation Kit",
     dealer: "Agri Tools & Seeds",
-    price: "₹4,500",
+    price: "₦4,500",
     unit: "per unit",
     inStock: false,
   },
@@ -62,7 +62,7 @@ const products = [
     id: 4,
     name: "Pesticide Spray Concentrate",
     dealer: "Green Valley Supplies",
-    price: "₹650",
+    price: "₦650",
     unit: "per liter",
     inStock: true,
   },
@@ -168,7 +168,7 @@ const Marketplace = () => {
                       </Badge>
                     )}
                     <Link to={`/marketplace/${product.id}`} className="w-full">
-                      <Button size="sm" className="w-full mt-2" disabled={!product.inStock}>
+                      <Button size="sm" className="w-full" disabled={!product.inStock}>
                         {product.inStock ? "View Details" : "Notify When Available"}
                       </Button>
                     </Link>

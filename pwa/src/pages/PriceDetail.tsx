@@ -11,22 +11,22 @@ const PriceDetail = () => {
   const priceData = {
     id: id,
     product: "NPK Fertilizer 20-20-20",
-    currentPrice: "₹1,200",
+    currentPrice: "₦1,200",
     trend: "up",
     change: "+5.2%",
     region: "Maharashtra",
     lastUpdated: "2 hours ago",
     priceHistory: [
-      { date: "Jan 2025", price: "₹1,140", dealer: "Green Valley Supplies" },
-      { date: "Dec 2024", price: "₹1,180", dealer: "Farm Input Co." },
-      { date: "Nov 2024", price: "₹1,150", dealer: "Agri Tools & Seeds" },
-      { date: "Oct 2024", price: "₹1,120", dealer: "Green Valley Supplies" },
+      { date: "Jan 2025", price: "₦1,140", dealer: "Green Valley Supplies" },
+      { date: "Dec 2024", price: "₦1,180", dealer: "Farm Input Co." },
+      { date: "Nov 2024", price: "₦1,150", dealer: "Agri Tools & Seeds" },
+      { date: "Oct 2024", price: "₦1,120", dealer: "Green Valley Supplies" },
     ],
     regionalPrices: [
-      { region: "Maharashtra", price: "₹1,200", trend: "up" },
-      { region: "Punjab", price: "₹1,180", trend: "stable" },
-      { region: "Karnataka", price: "₹1,220", trend: "up" },
-      { region: "Gujarat", price: "₹1,160", trend: "down" },
+      { region: "Maharashtra", price: "₦1,200", trend: "up" },
+      { region: "Punjab", price: "₦1,180", trend: "stable" },
+      { region: "Karnataka", price: "₦1,220", trend: "up" },
+      { region: "Gujarat", price: "₦1,160", trend: "down" },
     ],
   };
 
@@ -83,7 +83,7 @@ const PriceDetail = () => {
               <CardDescription>Lowest Price</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-success mb-2">₹1,160</div>
+              <div className="text-3xl font-bold text-success mb-2">₦1,160</div>
               <div className="text-sm text-muted-foreground">Gujarat region</div>
             </CardContent>
           </Card>
@@ -93,7 +93,7 @@ const PriceDetail = () => {
               <CardDescription>Highest Price</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-destructive mb-2">₹1,220</div>
+              <div className="text-3xl font-bold text-destructive mb-2">₦1,220</div>
               <div className="text-sm text-muted-foreground">Karnataka region</div>
             </CardContent>
           </Card>
