@@ -2,8 +2,8 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.api.deps import get_db
-from models import Dealer
-from schemas.dealer import DealerCreate, DealerOut
+from app.models import Dealer
+from app.schemas.dealer import DealerCreate, DealerOut
 
 router = APIRouter()
 

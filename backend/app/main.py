@@ -1,12 +1,13 @@
 import os
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from .api.v1.routers import (
+from app.api.v1.routers import (
     farmers_router,
     products_router,
     dealers_router,
     prices_router,
     chats_router,
+    auth_router,
 )
 
 load_dotenv()
@@ -19,3 +20,4 @@ app.include_router(products_router, prefix="/api/v1/products", tags=["Products"]
 app.include_router(dealers_router, prefix="/api/v1/dealers", tags=["Dealers"])
 app.include_router(prices_router, prefix="/api/v1/prices", tags=["Prices"])
 app.include_router(chats_router, prefix="/api/v1/chats", tags=["Chats"])
+app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
