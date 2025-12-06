@@ -29,6 +29,7 @@ import AddDealer from "./pages/admin/AddDealer";
 import AddProduct from "./pages/admin/AddProduct";
 import Analytics from "./pages/admin/Analytics";
 import SetPriceAlert from "./pages/SetPriceAlert";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/community/chats" element={<ChatRooms />} />
           <Route path="/community/chat/:id" element={<ChatRoom />} />
           <Route path="/ai-assistant" element={<AIAssistant />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />
