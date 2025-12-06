@@ -1,2 +1,4 @@
-from models.dealer import Dealer
-from db.session import Base
+"""Import all the models, so that Base has them before being imported by Alembic."""
+from app.db.session import Base
+from app.models.dealer import Dealer
+from app.models.users import User
