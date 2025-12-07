@@ -128,9 +128,11 @@ const Marketplace = () => {
                       {dealer.products} products available
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        View Products
-                      </Button>
+                      <Link to={`/dealer/${dealer.id}/products`} className="flex-1">
+                        <Button size="sm" className="w-full">
+                          View Products
+                        </Button>
+                      </Link>
                       <Button size="sm" variant="outline">
                         <Phone className="h-4 w-4" />
                       </Button>

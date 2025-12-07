@@ -30,6 +30,7 @@ import AddProduct from "./pages/admin/AddProduct";
 import Analytics from "./pages/admin/Analytics";
 import SetPriceAlert from "./pages/SetPriceAlert";
 import Dashboard from "./pages/Dashboard";
+import DealerProducts from "./pages/DealerProducts";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/marketplace/:id" element={<ProductDetail />} />
+          <Route path="/dealer/:dealerId/products" element={<DealerProducts />} />
           <Route path="/contact-dealer/:id" element={<ContactDealer />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/prices/:id" element={<PriceDetail />} />

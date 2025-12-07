@@ -1,6 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ShoppingBag, TrendingUp, MessageSquare, Moon, Sun } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShoppingBag,
+  TrendingUp,
+  MessageSquare,
+  Moon,
+  Sun,
+  LayoutDashboard,
+} from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 
@@ -14,6 +23,7 @@ export const Navigation = () => {
     { path: "/marketplace", label: "Marketplace", icon: ShoppingBag },
     { path: "/prices", label: "Price Intelligence", icon: TrendingUp },
     { path: "/community", label: "Community", icon: MessageSquare },
+    { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   ];
 
   return (
@@ -110,14 +120,30 @@ export const Navigation = () => {
                 className="w-full justify-start gap-2"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {theme === "dark" ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
                 {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Button>
-              <Link to="/login" onClick={() => setIsOpen(false)} className="block">
-                <Button variant="ghost" className="w-full justify-start">Login</Button>
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="block"
+              >
+                <Button variant="ghost" className="w-full justify-start">
+                  Login
+                </Button>
               </Link>
-              <Link to="/signup" onClick={() => setIsOpen(false)} className="block">
-                <Button variant="default" className="w-full justify-start">Sign Up</Button>
+              <Link
+                to="/signup"
+                onClick={() => setIsOpen(false)}
+                className="block"
+              >
+                <Button variant="default" className="w-full justify-start">
+                  Sign Up
+                </Button>
               </Link>
             </div>
           </div>
