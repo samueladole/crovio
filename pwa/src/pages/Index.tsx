@@ -1,10 +1,10 @@
 import { Navigation } from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { HowItWorks } from "@/components/HowItWorks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingBag, TrendingUp, MessageSquare, ArrowRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const Index = () => {
   const features = [
     {
@@ -34,7 +34,7 @@ const Index = () => {
   ];
 
   const benefits = [
-    "50,000+ active farmers trust Crovio",
+    "50,000+ active farmers trust AgriOne",
     "5,000+ verified dealers nationwide",
     "Real-time price updates every hour",
     "Multi-language support",
@@ -47,7 +47,7 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-hero py-20 md:py-32">
+      <section id="hero-section" className="relative overflow-hidden bg-gradient-hero py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground mb-6">
@@ -75,13 +75,13 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 container mx-auto px-4">
+      <section id="features-section" className="py-20 container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Three Powerful Platforms in One
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Crovio brings together everything you need to succeed in modern farming
+            AgriOne brings together everything you need to succeed in modern farming
           </p>
         </div>
 
@@ -112,12 +112,15 @@ const Index = () => {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <HowItWorks />
+
       {/* Benefits Section */}
       <section className="py-20 bg-muted">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
-              Why Farmers Choose Crovio
+              Why Farmers Choose AgriOne
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {benefits.map((benefit, index) => (
@@ -139,7 +142,7 @@ const Index = () => {
               Ready to Transform Your Farming Experience?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of farmers who are already benefiting from Crovio's comprehensive platform
+              Join thousands of farmers who are already benefiting from AgriOne's comprehensive platform
             </p>
             <Link to="/marketplace">
               <Button size="lg" className="gap-2">
@@ -150,6 +153,7 @@ const Index = () => {
           </CardContent>
         </Card>
       </section>
+
       <Footer />
     </div>
   );

@@ -31,25 +31,25 @@ const Profile = () => {
           </div>
 
           <Card className="shadow-card">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-6">
-                <Avatar className="h-24 w-24">
-                  <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
+                  <AvatarFallback className="text-xl sm:text-2xl bg-primary text-primary-foreground">
                     {user.name[0]}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-4">
+                <div className="flex-1 text-center sm:text-left">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between mb-4 gap-2">
                     <div>
-                      <h2 className="text-2xl font-bold text-foreground">{user.name}</h2>
-                      <p className="text-muted-foreground">Member since {user.joinedDate}</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground">{user.name}</h2>
+                      <p className="text-muted-foreground text-sm sm:text-base">Member since {user.joinedDate}</p>
                     </div>
                     <Button variant="outline" size="sm" className="gap-2">
                       <Edit className="h-4 w-4" />
                       Edit
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-2">
                     {user.crops.map((crop) => (
                       <Badge key={crop} variant="secondary">{crop}</Badge>
                     ))}

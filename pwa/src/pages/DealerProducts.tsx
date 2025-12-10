@@ -75,30 +75,30 @@ const DealerProducts = () => {
 
         {/* Dealer Info Card */}
         <Card className="shadow-card mb-8">
-          <CardHeader>
-            <div className="flex items-start justify-between">
+          <CardHeader className="pb-2 sm:pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div>
-                <CardTitle className="text-2xl">{dealer.name}</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl">{dealer.name}</CardTitle>
                 <CardDescription className="flex items-center gap-1 mt-1">
                   <MapPin className="h-4 w-4" />
                   {dealer.location}
                 </CardDescription>
               </div>
               {dealer.verified && (
-                <Badge variant="default" className="bg-success">
+                <Badge variant="default" className="bg-success w-fit">
                   Verified
                 </Badge>
               )}
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5 fill-warning text-warning" />
                 <span className="font-semibold text-lg">{dealer.rating}</span>
                 <span className="text-muted-foreground">rating</span>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 <Phone className="h-4 w-4 mr-2" />
                 Contact Dealer
               </Button>

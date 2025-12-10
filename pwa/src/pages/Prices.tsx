@@ -127,7 +127,7 @@ const Prices = () => {
             {priceData.map((item) => (
               <Card key={item.id} className="shadow-card hover:shadow-card-hover transition-shadow">
                 <CardContent className="pt-6">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex flex-col gap-4">
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg text-foreground mb-1">
                         {item.product}
@@ -137,17 +137,17 @@ const Prices = () => {
                       </p>
                     </div>
                     
-                    <div className="flex items-center gap-6">
-                      <div className="text-center">
-                        <div className="text-sm text-muted-foreground mb-1">Current Price</div>
-                        <div className="text-2xl font-bold text-foreground">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 items-center">
+                      <div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mb-1">Current Price</div>
+                        <div className="text-xl sm:text-2xl font-bold text-foreground">
                           {item.currentPrice}
                         </div>
                       </div>
                       
-                      <div className="text-center">
-                        <div className="text-sm text-muted-foreground mb-1">Market Avg</div>
-                        <div className="text-lg font-semibold text-muted-foreground">
+                      <div>
+                        <div className="text-xs sm:text-sm text-muted-foreground mb-1">Market Avg</div>
+                        <div className="text-base sm:text-lg font-semibold text-muted-foreground">
                           {item.avgPrice}
                         </div>
                       </div>
@@ -170,7 +170,7 @@ const Prices = () => {
                         )}
                       </div>
 
-                      <Link to={`/prices/${item.id}`}>
+                      <Link to={`/prices/${item.id}`} className="justify-self-end sm:justify-self-auto">
                         <Button size="sm">View Details</Button>
                       </Link>
                     </div>
