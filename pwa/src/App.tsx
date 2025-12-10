@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { APP_CONFIG } from "@/config/appConfig";
+import { PWAInstallPrompt, OfflineIndicator } from "@/components/PWAInstallPrompt";
 import ComingSoon from "./pages/ComingSoon";
 import Index from "./pages/Index";
 import Marketplace from "./pages/Marketplace";
@@ -41,6 +42,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <OfflineIndicator />
+      <PWAInstallPrompt />
       <BrowserRouter>
         {APP_CONFIG.isComingSoonMode ? (
           // Coming Soon mode - show only the Coming Soon page for all routes
