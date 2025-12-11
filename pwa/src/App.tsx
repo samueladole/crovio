@@ -34,6 +34,10 @@ import Analytics from "./pages/admin/Analytics";
 import SetPriceAlert from "./pages/SetPriceAlert";
 import Dashboard from "./pages/Dashboard";
 import DealerProducts from "./pages/DealerProducts";
+import CropDiseaseDetection from "./pages/CropDiseaseDetection";
+import SoilAnalysis from "./pages/SoilAnalysis";
+import PlantingSchedule from "./pages/PlantingSchedule";
+import IrrigationGuide from "./pages/IrrigationGuide";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +82,10 @@ const App = () => (
             <Route path="/admin/prices" element={<PriceManagement />} />
             <Route path="/admin/discussions" element={<Discussions />} />
             <Route path="/admin/analytics" element={<Analytics />} />
+            <Route path="/tools/disease-detection" element={<CropDiseaseDetection />} />
+            <Route path="/tools/soil-analysis" element={<SoilAnalysis />} />
+            <Route path="/tools/planting-schedule" element={<PlantingSchedule />} />
+            <Route path="/tools/irrigation-guide" element={<IrrigationGuide />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -75,13 +75,14 @@ const Community = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <Link to="/ai-assistant">
               <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5" />
-                    AI Farming Assistant
-                  </CardTitle>
+                  <Link to="/ai-assistant">
+                    <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5" />
+                      AI Farming Assistant
+                    </CardTitle>
+                  </Link>
                   <CardDescription>Get expert advice on your farming questions</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -96,7 +97,6 @@ const Community = () => {
                   </p>
                 </CardContent>
               </Card>
-            </Link>
 
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-4">Popular Discussions</h2>
