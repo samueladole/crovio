@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Camera, Upload, Scan, AlertTriangle, CheckCircle, Leaf, Bug, Droplets, Info } from "lucide-react";
 import { useState } from "react";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
 
 const CropDiseaseDetection = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -37,37 +39,45 @@ const CropDiseaseDetection = () => {
     }
   };
 
+  // ... imports moved to top
+
+
   const handleAnalyze = async () => {
     if (!selectedImage) return;
-    
+
     setIsAnalyzing(true);
-    // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
-    setResult({
-      disease: "Leaf Blight (Helminthosporium)",
-      confidence: 87,
-      severity: 'medium',
-      treatment: [
-        "Apply fungicide (Mancozeb or Copper-based) immediately",
-        "Remove and destroy infected leaves",
-        "Improve air circulation between plants",
-        "Reduce overhead irrigation"
-      ],
-      prevention: [
-        "Use disease-resistant varieties",
-        "Practice crop rotation (2-3 years)",
-        "Maintain proper plant spacing",
-        "Apply preventive fungicide during wet seasons"
-      ]
-    });
-    setIsAnalyzing(false);
+    try {
+      // For now, we simulate image upload by sending the base64 string as 'image_url' (truncated if too long for DB, but fine for test)
+      // or better, send a placeholder since backend is mock anyway
+      const payload = {
+        image_url: "https://placehold.co/600x400?text=Uploaded+Plant", // Mock URL since we don't have file storage yet
+        crop_type: "Unknown", // Backend doesn't strictly adhere to checks yet
+        notes: "Uploaded via PWA"
+      };
+
+      const response = await api.post("/crop/disease-detect", payload);
+      const data = response.data;
+
+      setResult({
+        disease: data.detected_disease,
+        confidence: Math.round(data.confidence_score * 100),
+        severity: 'medium', // Backend doesn't return severity yet, mock it
+        treatment: [data.recommendation, "Isolate plant"], // Wrap recommendation
+        prevention: ["Monitor nearby plants"]
+      });
+      toast.success("Analysis complete");
+    } catch (error) {
+      console.error(error);
+      toast.error("Analysis failed. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -95,9 +105,9 @@ const CropDiseaseDetection = () => {
               <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
                 {selectedImage ? (
                   <div className="space-y-4">
-                    <img 
-                      src={selectedImage} 
-                      alt="Uploaded crop" 
+                    <img
+                      src={selectedImage}
+                      alt="Uploaded crop"
                       className="max-h-64 mx-auto rounded-lg"
                     />
                     <Button variant="outline" onClick={() => setSelectedImage(null)}>
@@ -115,19 +125,19 @@ const CropDiseaseDetection = () => {
                         <span>Choose File</span>
                       </Button>
                     </Label>
-                    <Input 
-                      id="image-upload" 
-                      type="file" 
-                      accept="image/*" 
+                    <Input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
                       className="hidden"
                       onChange={handleImageUpload}
                     />
                   </div>
                 )}
               </div>
-              
-              <Button 
-                className="w-full gap-2" 
+
+              <Button
+                className="w-full gap-2"
                 disabled={!selectedImage || isAnalyzing}
                 onClick={handleAnalyze}
               >
@@ -177,7 +187,7 @@ const CropDiseaseDetection = () => {
                       </p>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-primary h-2 rounded-full transition-all"
                         style={{ width: `${result.confidence}%` }}
                       />

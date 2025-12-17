@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { APP_CONFIG } from "@/config/appConfig";
 import { PWAInstallPrompt, OfflineIndicator } from "@/components/PWAInstallPrompt";
+import { AuthProvider } from "@/context/AuthContext";
 import ComingSoon from "./pages/ComingSoon";
 import Index from "./pages/Index";
 import Marketplace from "./pages/Marketplace";
@@ -43,57 +44,59 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <OfflineIndicator />
-      <PWAInstallPrompt />
-      <BrowserRouter>
-        {APP_CONFIG.isComingSoonMode ? (
-          // Coming Soon mode - show only the Coming Soon page for all routes
-          <Routes>
-            <Route path="*" element={<ComingSoon />} />
-          </Routes>
-        ) : (
-          // Normal mode - show all routes
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/marketplace/:id" element={<ProductDetail />} />
-            <Route path="/dealer/:dealerId/products" element={<DealerProducts />} />
-            <Route path="/contact-dealer/:id" element={<ContactDealer />} />
-            <Route path="/prices" element={<Prices />} />
-            <Route path="/prices/:id" element={<PriceDetail />} />
-            <Route path="/set-price-alert" element={<SetPriceAlert />} />
-            <Route path="/community" element={<Community />} />
-            <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
-            <Route path="/community/chats" element={<ChatRooms />} />
-            <Route path="/community/chat/:id" element={<ChatRoom />} />
-            <Route path="/ai-assistant" element={<AIAssistant />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/dealers" element={<Dealers />} />
-            <Route path="/admin/dealers/add" element={<AddDealer />} />
-            <Route path="/admin/products" element={<Products />} />
-            <Route path="/admin/products/add" element={<AddProduct />} />
-            <Route path="/admin/prices" element={<PriceManagement />} />
-            <Route path="/admin/discussions" element={<Discussions />} />
-            <Route path="/admin/analytics" element={<Analytics />} />
-            <Route path="/tools/disease-detection" element={<CropDiseaseDetection />} />
-            <Route path="/tools/soil-analysis" element={<SoilAnalysis />} />
-            <Route path="/tools/planting-schedule" element={<PlantingSchedule />} />
-            <Route path="/tools/irrigation-guide" element={<IrrigationGuide />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        )}
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <OfflineIndicator />
+        <PWAInstallPrompt />
+        <BrowserRouter>
+          {APP_CONFIG.isComingSoonMode ? (
+            // Coming Soon mode - show only the Coming Soon page for all routes
+            <Routes>
+              <Route path="*" element={<ComingSoon />} />
+            </Routes>
+          ) : (
+            // Normal mode - show all routes
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/marketplace/:id" element={<ProductDetail />} />
+              <Route path="/dealer/:dealerId/products" element={<DealerProducts />} />
+              <Route path="/contact-dealer/:id" element={<ContactDealer />} />
+              <Route path="/prices" element={<Prices />} />
+              <Route path="/prices/:id" element={<PriceDetail />} />
+              <Route path="/set-price-alert" element={<SetPriceAlert />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
+              <Route path="/community/chats" element={<ChatRooms />} />
+              <Route path="/community/chat/:id" element={<ChatRoom />} />
+              <Route path="/ai-assistant" element={<AIAssistant />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/dealers" element={<Dealers />} />
+              <Route path="/admin/dealers/add" element={<AddDealer />} />
+              <Route path="/admin/products" element={<Products />} />
+              <Route path="/admin/products/add" element={<AddProduct />} />
+              <Route path="/admin/prices" element={<PriceManagement />} />
+              <Route path="/admin/discussions" element={<Discussions />} />
+              <Route path="/admin/analytics" element={<Analytics />} />
+              <Route path="/tools/disease-detection" element={<CropDiseaseDetection />} />
+              <Route path="/tools/soil-analysis" element={<SoilAnalysis />} />
+              <Route path="/tools/planting-schedule" element={<PlantingSchedule />} />
+              <Route path="/tools/irrigation-guide" element={<IrrigationGuide />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          )}
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

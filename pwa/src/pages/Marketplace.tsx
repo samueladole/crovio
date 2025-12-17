@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,74 +6,57 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Search, Star, MapPin, Phone } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
-const dealers = [
-  {
-    id: 1,
-    name: "Green Valley Supplies",
-    rating: 4.8,
-    location: "Maharashtra",
-    verified: true,
-    products: 45,
-  },
-  {
-    id: 2,
-    name: "Farm Input Co.",
-    rating: 4.6,
-    location: "Punjab",
-    verified: true,
-    products: 38,
-  },
-  {
-    id: 3,
-    name: "Agri Tools & Seeds",
-    rating: 4.9,
-    location: "Karnataka",
-    verified: true,
-    products: 52,
-  },
-];
+// Product interface matching backend
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  category: string;
+  image_url: string;
+  dealer_id: string;
+  dealer?: Dealer;
+}
 
-const products = [
-  {
-    id: 1,
-    name: "NPK Fertilizer 20-20-20",
-    dealer: "Green Valley Supplies",
-    price: "₦1,200",
-    unit: "per 50kg bag",
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "Organic Compost Premium",
-    dealer: "Farm Input Co.",
-    price: "₦850",
-    unit: "per 50kg bag",
-    inStock: true,
-  },
-  {
-    id: 3,
-    name: "Drip Irrigation Kit",
-    dealer: "Agri Tools & Seeds",
-    price: "₦4,500",
-    unit: "per unit",
-    inStock: false,
-  },
-  {
-    id: 4,
-    name: "Pesticide Spray Concentrate",
-    dealer: "Green Valley Supplies",
-    price: "₦650",
-    unit: "per liter",
-    inStock: true,
-  },
-];
+// Dealer Interface matching backend PublicDealer schema
+interface Dealer {
+  id: string;
+  business_name: string;
+  city?: string;
+  state?: string;
+  is_verified: boolean;
+  rating?: number; // backend might return 0.0
+  products_count?: number; // backend might return 0
+}
+
 
 const Marketplace = () => {
+  const [page, setPage] = useState(1);
+  const { data: products, isLoading, error } = useQuery({
+    queryKey: ['products', page],
+    queryFn: async () => {
+      const response = await api.get(`/products/?page=${page}&per_page=12`);
+      return response.data;
+    },
+    placeholderData: (previousData) => previousData // Keep previous data while fetching new page
+  });
+
+  // Fetch dealers
+  const { data: dealers } = useQuery({
+    queryKey: ['dealers'],
+    queryFn: async () => {
+      const response = await api.get('/dealers/');
+      return response.data as Dealer[];
+    }
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -99,18 +83,18 @@ const Marketplace = () => {
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-4">Verified Dealers</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {dealers.map((dealer) => (
+            {dealers?.map((dealer) => (
               <Card key={dealer.id} className="shadow-card hover:shadow-card-hover transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg">{dealer.name}</CardTitle>
+                      <CardTitle className="text-lg">{dealer.business_name}</CardTitle>
                       <CardDescription className="flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3" />
-                        {dealer.location}
+                        {dealer.city || "Unknown Location"}
                       </CardDescription>
                     </div>
-                    {dealer.verified && (
+                    {dealer.is_verified && (
                       <Badge variant="default" className="bg-success">
                         Verified
                       </Badge>
@@ -121,11 +105,11 @@ const Marketplace = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Star className="h-4 w-4 fill-warning text-warning" />
-                      <span className="font-semibold">{dealer.rating}</span>
+                      <span className="font-semibold">{dealer.rating || "N/A"}</span>
                       <span className="text-sm text-muted-foreground">rating</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {dealer.products} products available
+                      {dealer.products_count || 0} products available
                     </div>
                     <div className="flex gap-2">
                       <Link to={`/dealer/${dealer.id}/products`} className="flex-1">
@@ -147,37 +131,88 @@ const Marketplace = () => {
         {/* Available Products */}
         <section>
           <h2 className="text-2xl font-bold text-foreground mb-4">Available Products</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <Card key={product.id} className="shadow-card hover:shadow-card-hover transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-base">{product.name}</CardTitle>
-                  <CardDescription>{product.dealer}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="text-2xl font-bold text-primary">{product.price}</div>
-                      <div className="text-sm text-muted-foreground">{product.unit}</div>
+          <div className="space-y-6">
+            {isLoading ? (
+              <div className="text-center py-12">Loading products...</div>
+            ) : error ? (
+              <div className="text-center py-12 text-destructive">Error loading products</div>
+            ) : (
+              <>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {products?.items?.map((product: Product) => (
+                    <Card key={product.id} className="shadow-card hover:shadow-card-hover transition-shadow overflow-hidden">
+                      <div className="h-48 overflow-hidden bg-muted">
+                        <img
+                          src={product.image_url || "https://placehold.co/400x300?text=No+Image"}
+                          alt={product.name}
+                          className="w-full h-full object-cover transition-transform hover:scale-105"
+                        />
+                      </div>
+                      <CardHeader className="p-4 pb-2">
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-base line-clamp-1">{product.name}</CardTitle>
+                          <Badge variant="secondary" className="text-xs">{product.category}</Badge>
+                        </div>
+                        <CardDescription className="line-clamp-1">{product.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-2">
+                        <div className="space-y-3">
+                          <div>
+                            <div className="text-xl font-bold text-primary">₦{product.price.toLocaleString()}</div>
+                            <div className="text-xs text-muted-foreground">{product.quantity} in stock</div>
+                          </div>
+
+                          {product.quantity > 0 ? (
+                            <Badge variant="outline" className="border-success text-success text-xs">
+                              In Stock
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="border-destructive text-destructive text-xs">
+                              Out of Stock
+                            </Badge>
+                          )}
+
+                          <Link to={`/marketplace/${product.id}`} className="block w-full">
+                            <Button size="sm" className="w-full" disabled={product.quantity <= 0}>
+                              {product.quantity > 0 ? "View Details" : "Notify When Available"}
+                            </Button>
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+
+                  {products?.items?.length === 0 && (
+                    <div className="col-span-full text-center py-12 text-muted-foreground">
+                      No products found in this category.
                     </div>
-                    {product.inStock ? (
-                      <Badge variant="outline" className="border-success text-success">
-                        In Stock
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="border-destructive text-destructive">
-                        Out of Stock
-                      </Badge>
-                    )}
-                    <Link to={`/marketplace/${product.id}`} className="w-full">
-                      <Button size="sm" className="w-full" disabled={!product.inStock}>
-                        {product.inStock ? "View Details" : "Notify When Available"}
-                      </Button>
-                    </Link>
+                  )}
+                </div>
+
+                {/* Pagination Controls */}
+                {products && products.pages > 1 && (
+                  <div className="flex justify-center items-center gap-4 mt-8">
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                    >
+                      Previous
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Page {products.page} of {products.pages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage(p => Math.min(products.pages, p + 1))}
+                      disabled={page === products.pages}
+                    >
+                      Next
+                    </Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                )}
+              </>
+            )}
           </div>
         </section>
       </div>

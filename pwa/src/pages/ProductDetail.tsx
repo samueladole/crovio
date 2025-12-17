@@ -3,34 +3,69 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Phone, Package } from "lucide-react";
+import { ArrowLeft, Star, MapPin, Phone, Package, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+
+interface Dealer {
+  business_name: string;
+  city: string;
+  verified: boolean;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  category: string;
+  image_url: string;
+  dealer?: Dealer;
+  // Add other fields as needed
+}
 
 const ProductDetail = () => {
   const { id } = useParams();
 
-  // Mock data - in real app, fetch based on id
-  const product = {
-    id: id,
-    name: "NPK Fertilizer 20-20-20",
-    dealer: "Green Valley Supplies",
-    dealerRating: 4.8,
-    dealerLocation: "Maharashtra",
-    price: "₦1,200",
-    unit: "per 50kg bag",
-    inStock: true,
-    description: "Premium quality NPK fertilizer with balanced nutrients for optimal crop growth. Suitable for all types of crops during the vegetative and flowering stages.",
-    specifications: [
-      { label: "Nitrogen (N)", value: "20%" },
-      { label: "Phosphorus (P)", value: "20%" },
-      { label: "Potassium (K)", value: "20%" },
-      { label: "Package Size", value: "50kg bag" },
-    ],
-  };
+  const { data: product, isLoading, error } = useQuery({
+    queryKey: ['product', id],
+    queryFn: async () => {
+      const response = await api.get(`/products/${id}`);
+      return response.data as Product;
+    },
+    enabled: !!id
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navigation />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navigation />
+        <div className="flex-1 flex flex-col items-center justify-center gap-4">
+          <p className="text-destructive font-semibold">Error loading product</p>
+          <Link to="/marketplace">
+            <Button variant="outline">Back to Marketplace</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 py-8">
         <Link to="/marketplace" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" />
@@ -41,8 +76,12 @@ const ProductDetail = () => {
           {/* Product Image Placeholder */}
           <Card className="shadow-card">
             <CardContent className="p-8">
-              <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                <Package className="h-32 w-32 text-muted-foreground" />
+              <div className="aspect-square bg-muted rounded-lg flex items-center justify-center overflow-hidden">
+                {product.image_url ? (
+                  <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                  <Package className="h-32 w-32 text-muted-foreground" />
+                )}
               </div>
             </CardContent>
           </Card>
@@ -57,13 +96,13 @@ const ProductDetail = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="text-3xl font-bold text-primary">{product.price}</div>
-              <div className="text-muted-foreground">{product.unit}</div>
+              <div className="text-3xl font-bold text-primary">₦{product.price.toLocaleString()}</div>
+              <Badge variant="secondary">{product.category}</Badge>
             </div>
 
-            {product.inStock ? (
+            {product.quantity > 0 ? (
               <Badge variant="outline" className="border-success text-success">
-                In Stock
+                In Stock ({product.quantity} available)
               </Badge>
             ) : (
               <Badge variant="outline" className="border-destructive text-destructive">
@@ -77,17 +116,15 @@ const ProductDetail = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <div className="font-semibold">{product.dealer}</div>
+                  <div className="font-semibold">{product.dealer?.business_name || "Unknown Dealer"}</div>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <MapPin className="h-3 w-3" />
-                    {product.dealerLocation}
+                    {product.dealer?.city || "Unknown Location"}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4 fill-warning text-warning" />
-                  <span className="font-semibold">{product.dealerRating}</span>
-                  <span className="text-sm text-muted-foreground">rating</span>
-                </div>
+                {product.dealer?.verified && (
+                  <Badge className="bg-success">Verified Dealer</Badge>
+                )}
               </CardContent>
             </Card>
 
@@ -96,20 +133,14 @@ const ProductDetail = () => {
                 <CardTitle className="text-lg">Specifications</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {product.specifications.map((spec, index) => (
-                    <div key={index} className="flex justify-between py-2 border-b border-border last:border-0">
-                      <span className="text-muted-foreground">{spec.label}</span>
-                      <span className="font-semibold">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
+                {/*  TODO: Add actual specifications to backend model if needed */}
+                <p className="text-sm text-muted-foreground italic">No additional specifications available.</p>
               </CardContent>
             </Card>
 
             <div className="flex gap-3">
               <Link to={`/contact-dealer/${product.id}`} className="flex-1">
-                <Button size="lg" className="w-full" disabled={!product.inStock}>
+                <Button size="lg" className="w-full" disabled={product.quantity <= 0}>
                   Contact Dealer
                 </Button>
               </Link>

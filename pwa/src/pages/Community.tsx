@@ -7,62 +7,62 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageSquare, Users, Send, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const discussions = [
-  {
-    id: 1,
-    title: "Best practices for monsoon preparation",
-    author: "Rajesh Kumar",
-    region: "Maharashtra",
-    replies: 23,
-    category: "Weather & Seasons",
-  },
-  {
-    id: 2,
-    title: "Organic fertilizer recommendations needed",
-    author: "Priya Singh",
-    region: "Punjab",
-    replies: 15,
-    category: "Fertilizers",
-  },
-  {
-    id: 3,
-    title: "Drip irrigation setup guide",
-    author: "Amit Patel",
-    region: "Gujarat",
-    replies: 34,
-    category: "Irrigation",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
-const activeChats = [
-  {
-    id: 1,
-    name: "Maharashtra Farmers",
-    members: 234,
-    lastMessage: "Anyone using biofertilizers this season?",
-    time: "5m ago",
-  },
-  {
-    id: 2,
-    name: "Rice Cultivation Tips",
-    members: 456,
-    lastMessage: "Pest control methods discussion",
-    time: "15m ago",
-  },
-  {
-    id: 3,
-    name: "Organic Farming",
-    members: 189,
-    lastMessage: "Compost preparation techniques",
-    time: "1h ago",
-  },
-];
+interface Post {
+  id: string;
+  title: string;
+  content: string;
+  author_id: string;
+  category: string;
+  comments_count: number;
+  likes_count: number;
+  created_at: string;
+  author?: {
+    first_name: string;
+    last_name: string;
+    location?: string;
+  }
+}
 
 const Community = () => {
+  const { data: posts, isLoading, error } = useQuery({
+    queryKey: ['posts'],
+    queryFn: async () => {
+      const response = await api.get('/community/posts');
+      return response.data;
+    }
+  });
+
+  // Keep activeChats mock for now as backend chat isn't fully implemented
+  const activeChats = [
+    {
+      id: 1,
+      name: "Maharashtra Farmers",
+      members: 234,
+      lastMessage: "Anyone using biofertilizers this season?",
+      time: "5m ago",
+    },
+    {
+      id: 2,
+      name: "Rice Cultivation Tips",
+      members: 456,
+      lastMessage: "Pest control methods discussion",
+      time: "15m ago",
+    },
+    {
+      id: 3,
+      name: "Organic Farming",
+      members: 189,
+      lastMessage: "Compost preparation techniques",
+      time: "1h ago",
+    },
+  ];
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -75,58 +75,68 @@ const Community = () => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-              <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
-                <CardHeader>
-                  <Link to="/ai-assistant">
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5" />
-                      AI Farming Assistant
-                    </CardTitle>
-                  </Link>
-                  <CardDescription>Get expert advice on your farming questions</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex gap-2">
-                    <Input placeholder="Ask about crops, diseases, weather..." />
-                    <Button size="icon">
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Try asking: "What's the best fertilizer for wheat?"
-                  </p>
-                </CardContent>
-              </Card>
+            <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
+              <CardHeader>
+                <Link to="/ai-assistant">
+                  <CardTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5" />
+                    AI Farming Assistant
+                  </CardTitle>
+                </Link>
+                <CardDescription>Get expert advice on your farming questions</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Input placeholder="Ask about crops, diseases, weather..." />
+                  <Button size="icon">
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Try asking: "What's the best fertilizer for wheat?"
+                </p>
+              </CardContent>
+            </Card>
 
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-4">Popular Discussions</h2>
               <div className="space-y-4">
-                {discussions.map((discussion) => (
-                  <Link key={discussion.id} to={`/community/discussion/${discussion.id}`}>
-                    <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-2 flex-1">
-                            <h3 className="font-semibold text-lg text-foreground">{discussion.title}</h3>
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                              <span>by {discussion.author}</span>
-                              <span>•</span>
-                              <span>{discussion.region}</span>
+                {isLoading ? (
+                  <div className="text-center py-8">Loading discussions...</div>
+                ) : error ? (
+                  <div className="text-center py-8 text-destructive">Error loading discussions</div>
+                ) : (
+                  posts?.map((post: Post) => (
+                    <Link key={post.id} to={`/community/discussion/${post.id}`}>
+                      <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer mb-4">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                              <h3 className="font-semibold text-lg text-foreground">{post.title}</h3>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <span>by {post.author ? `${post.author.first_name} ${post.author.last_name}` : 'Unknown'}</span>
+                                {post.author?.location && (
+                                  <>
+                                    <span>•</span>
+                                    <span>{post.author.location}</span>
+                                  </>
+                                )}
+                              </div>
                             </div>
+                            <Badge variant="outline">{post.category}</Badge>
                           </div>
-                          <Badge variant="outline">{discussion.category}</Badge>
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <MessageSquare className="h-4 w-4" />
-                            <span className="text-sm">{discussion.replies} replies</span>
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <MessageSquare className="h-4 w-4" />
+                              <span className="text-sm">{post.comments_count || 0} replies</span>
+                            </div>
+                            <Button size="sm" variant="outline">View Discussion</Button>
                           </div>
-                          <Button size="sm" variant="outline">View Discussion</Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))
+                )}
               </div>
             </section>
           </div>

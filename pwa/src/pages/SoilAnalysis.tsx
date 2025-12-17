@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Beaker, Droplets, Leaf, Mountain, Sun, Thermometer, AlertCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
 
 const SoilAnalysis = () => {
   const [location, setLocation] = useState("");
@@ -26,7 +28,7 @@ const SoilAnalysis = () => {
   } | null>(null);
 
   const nigerianRegions = [
-    "North Central", "North East", "North West", 
+    "North Central", "North East", "North West",
     "South East", "South South", "South West"
   ];
 
@@ -34,29 +36,57 @@ const SoilAnalysis = () => {
     "Sandy", "Loamy", "Clay", "Sandy Loam", "Clay Loam", "Silty"
   ];
 
+  // ... imports moved to top
+
   const handleAnalyze = async () => {
     if (!location || !soilType) return;
-    
+
     setIsAnalyzing(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Mock analysis results based on region and soil type
-    setResults({
-      ph: 6.2,
-      nitrogen: 65,
-      phosphorus: 45,
-      potassium: 78,
-      organicMatter: 3.5,
-      moisture: 42,
-      recommendations: [
-        "Apply NPK 15-15-15 fertilizer at 200kg/hectare",
-        "Add organic compost to improve nitrogen levels",
-        "Consider lime application to raise pH slightly",
-        "Implement mulching to retain soil moisture"
-      ],
-      suitableCrops: ["Maize", "Cassava", "Yam", "Groundnut", "Cowpea", "Sorghum"]
-    });
-    setIsAnalyzing(false);
+
+    try {
+      const payload = {
+        ph_level: 6.5, // Mock values since we don't have real sensor input yet
+        nitrogen: 50,
+        phosphorus: 40,
+        potassium: 60,
+        moisture: 30,
+        organic_matter: 3.0,
+        location: location,
+        notes: `Region: ${location}, Type: ${soilType}`
+      };
+
+      // In real app, we might get these from inputs or just assume current endpoint generates them
+      // But the endpoint expects `SoilAnalysisCreate` which has ph_level etc.
+      // So effectively we are saving the record. The 'analysis' part is simulated on backend creation or here.
+      // Let's assume the user IS entering these or we are simulating 'reading' them. 
+      // Current UI has only Region/Type.
+      // We will generate random data to simulate 'Sensor Reading' or 'Lab Report' being saved.
+
+      const response = await api.post("/crop/soil-analysis", payload);
+      const data = response.data;
+
+      setResults({
+        ph: data.ph_level,
+        nitrogen: data.nitrogen,
+        phosphorus: data.phosphorus,
+        potassium: data.potassium,
+        organicMatter: data.organic_matter,
+        moisture: data.moisture,
+        recommendations: [
+          "Apply NPK 15-15-15 fertilizer at 200kg/hectare",
+          "Add organic compost to improve nitrogen levels",
+          "Consider lime application to raise pH slightly",
+          "Implement mulching to retain soil moisture"
+        ],
+        suitableCrops: ["Maize", "Cassava", "Yam", "Groundnut", "Cowpea", "Sorghum"]
+      });
+      toast.success("Analysis complete");
+    } catch (error) {
+      console.error(error);
+      toast.error("Analysis failed");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const getNutrientStatus = (value: number) => {
@@ -74,7 +104,7 @@ const SoilAnalysis = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -132,8 +162,8 @@ const SoilAnalysis = () => {
                 <Input id="farm-size" type="number" placeholder="e.g., 2.5" />
               </div>
 
-              <Button 
-                className="w-full" 
+              <Button
+                className="w-full"
                 disabled={!location || !soilType || isAnalyzing}
                 onClick={handleAnalyze}
               >
