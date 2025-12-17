@@ -62,7 +62,9 @@ def test_create_product(authorized_client):
 def test_list_products(client):
     response = client.get("/api/v1/products/")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    data = response.json()
+    assert "items" in data
+    assert isinstance(data["items"], list)
 
 def test_create_post(authorized_client):
     response = authorized_client.post(
