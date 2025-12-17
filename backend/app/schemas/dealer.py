@@ -61,3 +61,11 @@ class DealerPublic(BaseModel):
             # owner_name=user.full_name() # If we add full_name property to schema
         )
 
+
+
+class PaginatedDealerResponse(BaseModel):
+    items: List[DealerPublic]
+    total: int
+    page: int
+    pages: int
+    per_page: int
