@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isAxiosError } from "axios";
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,9 +48,13 @@ const Login = () => {
 
       toast.success("Welcome back!");
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.detail || "Invalid credentials");
+      let errorMessage = "Invalid credentials";
+      if (isAxiosError(error)) {
+        errorMessage = error.response?.data?.detail || errorMessage;
+      }
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

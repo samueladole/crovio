@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isAxiosError } from "axios";
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,9 +48,13 @@ const Signup = () => {
 
       toast.success("Account created! Please log in.");
       navigate("/login");
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.detail || "Registration failed");
+      let errorMessage = "Registration failed";
+      if (isAxiosError(error)) {
+        errorMessage = error.response?.data?.detail || errorMessage;
+      }
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

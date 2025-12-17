@@ -6,20 +6,46 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
-import { Calendar, Sun, Cloud, Droplets, Thermometer, Clock, Sprout, Leaf, CheckCircle, Loader2 } from "lucide-react";
+import { Calendar, Sun, Cloud, Droplets, Thermometer, Clock, Sprout, Leaf, CheckCircle, Loader2, LucideIcon } from "lucide-react";
 import { useState } from "react";
 
-// ...imports
+interface GrowthStage {
+  stage: string;
+  duration: string;
+  tasks: string[];
+}
+
+interface MonthlyTask {
+  month: string;
+  tasks: string[];
+}
+
+interface WeatherTip {
+  icon: LucideIcon;
+  tip: string;
+}
+
+interface ScheduleData {
+  crop: string;
+  region: string;
+  plantingWindow: {
+    early: string;
+    late: string;
+  };
+  growthStages: GrowthStage[];
+  monthlyTasks: MonthlyTask[];
+  weatherTips: WeatherTip[];
+}
 
 const PlantingSchedule = () => {
   const [selectedCrop, setSelectedCrop] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
   const [loading, setLoading] = useState(false);
-  const [scheduleData, setScheduleData] = useState<any>(null); // Initial null, show placeholder or static
+  const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
 
   // ... maps
   // Static backup data or default view
-  const defaultScheduleData = {
+  const defaultScheduleData: ScheduleData = {
     crop: "Maize",
     region: "North Central",
     // ... rest of static data
@@ -191,7 +217,7 @@ const PlantingSchedule = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {displayData.growthStages.map((stage: any, index: number) => (
+              {displayData.growthStages.map((stage, index) => (
                 <div key={index} className="flex flex-col sm:flex-row gap-4 p-4 bg-muted rounded-lg">
                   <div className="flex items-center gap-3 sm:w-48 flex-shrink-0">
                     <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
@@ -204,7 +230,7 @@ const PlantingSchedule = () => {
                   </div>
                   <div className="flex-1">
                     <div className="flex flex-wrap gap-2">
-                      {stage.tasks.map((task: string, taskIndex: number) => (
+                      {stage.tasks.map((task, taskIndex) => (
                         <Badge key={taskIndex} variant="outline" className="text-xs">
                           {task}
                         </Badge>
@@ -228,11 +254,11 @@ const PlantingSchedule = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {displayData.monthlyTasks.map((month: any, index: number) => (
+                {displayData.monthlyTasks.map((month, index) => (
                   <div key={index} className="border-l-4 border-primary pl-4 py-2">
                     <p className="font-semibold text-foreground">{month.month}</p>
                     <ul className="mt-2 space-y-1">
-                      {month.tasks.map((task: string, taskIndex: number) => (
+                      {month.tasks.map((task, taskIndex) => (
                         <li key={taskIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
                           <CheckCircle className="h-3 w-3 text-success" />
                           {task}
@@ -255,7 +281,7 @@ const PlantingSchedule = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {displayData.weatherTips.map((tip: any, index: number) => {
+                {displayData.weatherTips.map((tip, index) => {
                   const Icon = tip.icon;
                   return (
                     <div key={index} className="flex items-start gap-4 p-4 bg-muted rounded-lg">
