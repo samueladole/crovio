@@ -1,11 +1,59 @@
+import { useState, useCallback, useEffect } from "react";
+import { Navigation } from "@/components/Navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
+import { Search, Star, MapPin, Phone, ChevronLeft, ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback, useEffect } from "react";
 
-// ... (existing imports)
+// Product interface matching backend
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  category: string;
+  image_url: string;
+  dealer_id: string;
+  dealer?: Dealer;
+}
+
+// Dealer Interface matching backend PublicDealer schema
+interface Dealer {
+  id: string;
+  business_name: string;
+  city?: string;
+  state?: string;
+  is_verified: boolean;
+  rating?: number; // backend might return 0.0
+  products_count?: number; // backend might return 0
+}
+
 
 const Marketplace = () => {
-  // ... (existing state)
+  const [page, setPage] = useState(1);
+  const { data: products, isLoading, error } = useQuery({
+    queryKey: ['products', page],
+    queryFn: async () => {
+      const response = await api.get(`/products/?page=${page}&per_page=12`);
+      return response.data;
+    },
+    placeholderData: (previousData) => previousData // Keep previous data while fetching new page
+  });
+
+  // Fetch dealers
+  const { data: dealers } = useQuery({
+    queryKey: ['dealers'],
+    queryFn: async () => {
+      const response = await api.get('/dealers/');
+      return response.data as Dealer[];
+    }
+  });
 
   // Embla Carousel for Dealers
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
