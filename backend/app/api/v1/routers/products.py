@@ -17,13 +17,17 @@ def list_products(
     page: int = Query(1, ge=1, description="Page number"),
     per_page: int = Query(20, ge=1, le=100, description="Items per page"),
     category: Optional[str] = None,
-    search: Optional[str] = None
+    search: Optional[str] = None,
+    dealer_id: Optional[UUID] = None
 ):
     """List products with optional filtering and pagination."""
     query = db.query(Product).filter(Product.is_active == True)
     
     if category:
         query = query.filter(Product.category == category)
+    
+    if dealer_id:
+        query = query.filter(Product.dealer_id == dealer_id)
     
     if search:
         query = query.filter(Product.name.ilike(f"%{search}%"))
