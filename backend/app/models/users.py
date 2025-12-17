@@ -8,10 +8,17 @@ from sqlalchemy import (
     Date,
     DateTime,
     func,
+    Enum,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.session import Base
+import enum
 
+class UserRole(str, enum.Enum):
+    ADMIN = "admin"
+    FARMER = "farmer"
+    DEALER = "dealer"
+    USER = "user"
 
 class User(Base):
     """Database Model for Users."""
@@ -38,6 +45,13 @@ class User(Base):
         String(255),
         nullable=False,
         comment="Hashed password using bcrypt/argon2; never store plaintext.",
+    )
+
+    # Role
+    role: Mapped[UserRole] = mapped_column(
+        String(50), 
+        default=UserRole.USER,
+        nullable=False
     )
 
     # Optional Profile Fields
@@ -77,7 +91,7 @@ class User(Base):
         """Calculates the age of the user based on the birthdate."""
         if self.birthdate:
             today = date.today()
-            age = (
+            return (
                 today.year
                 - self.birthdate.year
                 - (
@@ -85,7 +99,6 @@ class User(Base):
                     < (self.birthdate.month, self.birthdate.day)
                 )
             )
-            return age
         return None
 
     def to_dict(self) -> dict:
@@ -93,6 +106,7 @@ class User(Base):
         return {
             "id": str(self.id),
             "email": self.email,
+            "role": self.role,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "username": self.username,
@@ -104,27 +118,15 @@ class User(Base):
             "updated_at": self.updated_at.isoformat(),
         }
 
+    # Class methods for convenience
     @classmethod
     def get_by_email(cls, session, email: str) -> Optional["User"]:
-        """Fetches a user by email."""
         return session.query(cls).filter(cls.email == email).first()
 
     @classmethod
     def get_by_username(cls, session, username: str) -> Optional["User"]:
-        """Fetches a user by username."""
         return session.query(cls).filter(cls.username == username).first()
-
+    
     @classmethod
-    def create(cls, session, **kwargs) -> "User":
-        """Creates a new user instance and adds it to the session."""
-        user = cls(**kwargs)
-        session.add(user)
-        session.commit()
-        session.refresh(user)
-        return user
-
-    def update(self, session, **kwargs) -> None:
-        """Updates user attributes and commits the changes."""
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        session.commit()
+    def get_by_phone(cls, session, phone: str) -> Optional["User"]:
+        return session.query(cls).filter(cls.phone == phone).first()
