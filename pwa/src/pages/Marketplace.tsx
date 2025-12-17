@@ -47,13 +47,15 @@ const Marketplace = () => {
   });
 
   // Fetch dealers
-  const { data: dealers } = useQuery({
+  const { data: dealersData } = useQuery({
     queryKey: ['dealers'],
     queryFn: async () => {
       const response = await api.get('/dealers/');
-      return response.data as Dealer[];
+      return response.data;
     }
   });
+
+  const dealers = dealersData?.items || [];
 
   // Embla Carousel for Dealers
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });

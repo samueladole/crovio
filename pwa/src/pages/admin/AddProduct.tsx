@@ -39,33 +39,46 @@ const productSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
+import { api } from "@/lib/api";
+
 const AddProduct = () => {
   const navigate = useNavigate();
-  
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
       category: "",
-      dealer: "",
+      dealer: "current", // Default or forced
       price: "",
       stock: "",
-      unit: "",
+      unit: "kg",
       description: "",
       image: "",
     },
   });
 
-  const onSubmit = (data: ProductFormValues) => {
-    console.log("Product data:", data);
-    toast.success("Product added successfully!");
-    navigate("/admin/products");
+  const onSubmit = async (data: ProductFormValues) => {
+    try {
+      const payload = {
+        ...data,
+        price: parseFloat(data.price),
+        quantity: parseInt(data.stock),
+        dealer_id: undefined // Backend handles this from token for now
+      };
+      await api.post('/products/', payload);
+      toast.success("Product added successfully!");
+      navigate("/admin/products");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add product");
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <Link to="/admin/products">
@@ -210,10 +223,10 @@ const AddProduct = () => {
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Detailed description of the product..." 
+                        <Textarea
+                          placeholder="Detailed description of the product..."
                           className="min-h-[100px]"
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />

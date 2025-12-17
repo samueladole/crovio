@@ -12,18 +12,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { useState } from "react";
+
+interface Dealer {
+  id: string;
+  business_name: string;
+  owner_name?: string;
+  city?: string;
+  is_verified: boolean;
+  products_count: number;
+}
 
 const Dealers = () => {
-  const dealers = [
-    { id: 1, name: "Green Valley Suppliers", email: "contact@greenvalley.com", phone: "+91 98765 43210", status: "active", products: 45 },
-    { id: 2, name: "Farm Fresh Traders", email: "info@farmfresh.com", phone: "+91 98765 43211", status: "active", products: 32 },
-    { id: 3, name: "Agro Solutions Ltd", email: "support@agrosol.com", phone: "+91 98765 43212", status: "pending", products: 0 },
-  ];
+  const [page, setPage] = useState(1);
+  const { data: dealersData, isLoading, error } = useQuery({
+    queryKey: ['admin-dealers', page],
+    queryFn: async () => {
+      const response = await api.get(`/dealers/?page=${page}&per_page=10`);
+      return response.data;
+    },
+    placeholderData: (previousData) => previousData
+  });
+
+  const dealers = dealersData?.items || [];
+  const totalPages = dealersData?.pages || 1;
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <Link to="/admin">
@@ -32,7 +51,7 @@ const Dealers = () => {
               Back to Dashboard
             </Button>
           </Link>
-          
+
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -67,50 +86,79 @@ const Dealers = () => {
             <CardDescription>A list of all registered dealers</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Products</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {dealers.map((dealer) => (
-                  <TableRow key={dealer.id}>
-                    <TableCell className="font-medium">{dealer.name}</TableCell>
-                    <TableCell>{dealer.email}</TableCell>
-                    <TableCell>{dealer.phone}</TableCell>
-                    <TableCell>{dealer.products}</TableCell>
-                    <TableCell>
-                      <Badge variant={dealer.status === "active" ? "default" : "secondary"}>
-                        {dealer.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Approve</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            Suspend
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {isLoading ? (
+              <div className="text-center py-4">Loading dealers...</div>
+            ) : error ? (
+              <div className="text-center py-4 text-destructive">Error loading dealers</div>
+            ) : (
+              <>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Business Name</TableHead>
+                      <TableHead>Location</TableHead>
+                      <TableHead>Products</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {dealers?.map((dealer) => (
+                      <TableRow key={dealer.id}>
+                        <TableCell className="font-medium">{dealer.business_name}</TableCell>
+                        <TableCell>{dealer.city || "N/A"}</TableCell>
+                        <TableCell>{dealer.products_count}</TableCell>
+                        <TableCell>
+                          <Badge variant={dealer.is_verified ? "default" : "secondary"}>
+                            {dealer.is_verified ? "Verified" : "Unverified"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>View Details</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem>Approve</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive">
+                                Suspend
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-4 mt-8">
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                    >
+                      Previous
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Page {page} of {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                      disabled={page === totalPages}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
