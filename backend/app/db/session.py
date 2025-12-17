@@ -6,9 +6,12 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sqlite.db")
 
 # Engine
+connect_args = {"check_same_thread": False} if "sqlite" in SQLALCHEMY_DATABASE_URL else {}
+
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    connect_args=connect_args
 )
 
 # SessionLocal instance
